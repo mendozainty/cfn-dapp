@@ -11,85 +11,70 @@ var account_4 = '0xA8F73a405CDC2873A3c6898eefE73e87a20A8467';
 var intefaceIERC721 = '0x80ac58cd';
 var intefaceIERC721Metadata = '0x5b5e139f';
 var intefaceIERC165 = '0x01ffc9a7';
-const web3 = new Web3(); 
 
-CFN_connect = {
-  
-  loadWeb3: async () => {    
-      if (typeof web3 !== 'undefined') {
-        CFN_connect.web3Provider = web3.currentProvider
-        web3 = new Web3(web3.currentProvider)
-      } else {
-        window.alert("Please connect to Metamask.")
-      }
-      if (window.ethereum) {
-        window.web3 = new Web3(ethereum)
-        try {
-          // Request account access if needed
-          await ethereum.enable()
-          // Acccounts now exposed
-          // web3.eth.sendTransaction({/* ... */})
-        } catch (error) {
-          // User denied account access...
-        }
-      }
-      // Legacy dapp browsers...
-      else if (window.web3) {
-        CFN_connect.web3Provider = web3.currentProvider
-        window.web3 = new Web3(web3.currentProvider)
-        // Acccounts always exposed
-        web3.eth.sendTransaction({/* ... */})
-      }
-      // Non-dapp browsers...
-      else {
-        console.log('Non-Ethereum browser detected. You should consider trying MetaMask!')
-      }    
-  },  
-    
-  start: () => {
+
+module.exports = {     
+  start: (callback) => {
+    var web3 = new Web3(Web3.givenProvider || 'http://127.0.0.1:7545');
+    var self = this;
     web3.eth.getAccounts(function(err, accs) {
       if (err != null) {
         console.log("There was an error fetching your accounts.");
         return;
       }
-
       if (accs.length == 0) {
         console.log("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
         return;
       }
       self.accounts = accs;
       self.account = self.accounts[0];
-
       callback(self.accounts);
     })
   },
 
-  getName: () => {
-        
-    CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
+  getAddress: (callback) => {
+    CFN.setProvider(Web3.givenProvider  || 'http://127.0.0.1:7545');
+    var CFN_instance;
+    CFN.deployed().then(function(instance){
+      CFN_instance = instance;
+      return CFN_instance.address;
+    }).then((result) => {
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
+    })
+  },
 
+  getName: (callback) => {        
+    CFN.setProvider(Web3.givenProvider  || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then(function(instance){
       CFN_instance = instance;
       return CFN_instance.name.call();
-    }).then((result) => {
-      console.log(result);
+    }).then((result) => {      
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  getSymbol: () => {
-
+  getSymbol: (callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
       return CFN_instance.symbol.call();
-    }).then((result) => {
-      console.log(result);
+    }).then((result) => {      
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  getContractOwner: () => {
+  getContractOwner: (callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
@@ -97,100 +82,136 @@ CFN_connect = {
       return CFN_instance._contractOwner.call();
     }).then((result) => {
       console.log(result);
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  balandeOf: () => {
+  balandeOf: (account, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance.balanceOf.call(account_2);
+      return CFN_instance.balanceOf.call(account);
     }).then((value) => {
+      callback(value.toNumber());
       console.log(value.toNumber());
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404')
     })
   },
 
-  safeMint: () => {
+  safeMint: (accountTo, currentAccount, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance.safeMint(account_3, {from: account_1});
+      return CFN_instance.safeMint(accountTo, {from: currentAccount});
     }).then((result) => {
       console.log(result);
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  ownerOf: () => {
+  ownerOf: (tokenId, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance.ownerOf.call(1);
+      return CFN_instance.ownerOf.call(tokenId);
     }).then((result) => {
       console.log(result);
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  approve: () => {
+  approve: (approveTo, tokenId, currentAccount, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance.approve(account_4, 2, {from: account_3});
+      return CFN_instance.approve(approveTo, tokenId, {from: currentAccount});
     }).then((result) => {
       console.log(result);
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  safeTransferFrom: () => {
+  safeTransferFrom: (accountFrom, accountTo, tokenId, currentAccount, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance.safeTransferFrom(account_4, account_2, 1, {from: account_3});
+      return CFN_instance.safeTransferFrom(accountFrom, accountTo, tokenId, {from: currentAccount});
     }).then((result) => {
       console.log(result);
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  burnCFN: () => {
+  burnCFN: (tokenId, currentAccount, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance._burnCFN( 1, {from: account_4});
-    }).then((result) => {
-      console.log(result);
+      return CFN_instance._burnCFN( tokenId, {from: currentAccount});
+    }).then((result) => {      
+        console.log(result);
+        callback(result);      
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  getApproved: () => {
+  getApproved: (tokenId, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance.getApproved.call(2);
+      return CFN_instance.getApproved.call(tokenId);
     }).then((result) => {
       console.log(result);
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   },
 
-  supportsInterfaceID: () => {
+  supportsInterfaceID: (interfaceId, callback) => {
     CFN.setProvider(Web3.givenProvider || 'http://127.0.0.1:7545');
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance.supportsInterface.call(intefaceIERC165);
+      return CFN_instance.supportsInterface.call(interfaceId);
     }).then((result) => {
       console.log(result);
+      callback(result);
+    }).catch((e) => {
+      console.log(e);
+      callback('Error 404');
     })
   }
 }
 
-module.exports = { CFN_connect };
-console.log(CFN_connect);
+
+//console.log(CFN_connect);
 
 
 

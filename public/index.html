@@ -5,7 +5,7 @@
     <title>CFN - CommFutureNFT</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Bootstrap css-->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- bootstrap javascript -->
@@ -39,23 +39,34 @@
     <div class="row">
       <div class="col-md-10 col-md-offset-1">
         <div class="select active">
-            <h1>MetaCoin</h1>
-            <h2>Example Truffle DApp</h2>
+            <h1>Commodity Future NFT</h1>
+            <h2>Prototype 1</h2>
+            <button class="btn btn-primary enableEthereumButton">Enable Ethereum</button>
+            <button class="btn btn-primary ethereumGetAccount">Get Account</button>
+            <button class="btn btn-primary ethereumGetBalance">Get Balance</button>
+            <h4>Account connected:  <span class="black"><span id="account"></span></span></h4>
+            <h4>Account balance:  <span class="black"><span id="balance"></span></span> wei</h4>
+            <button class="btn btn-primary contractAddress">Smart Contract Address</button>
+            <button class="btn btn-primary nftName">Name</button>
+            <button class="btn btn-primary nftSymbol">Symbol</button>
+            <button class="btn btn-primary contractOwner">Contract Owner</button>
+            <h4>Smart Contract Address:  <span class="black"><span id="contaddress"></span></span></h4>
+            <h4>NFT name:  <span class="black"><span id="name"></span></span></h4>
+            <h4>NFT Symbol:  <span class="black"><span id="symbol"></span></span></h4>
+            <h4>Contract Owner:  <span class="black"><span id="contOwner"></span></span></h4>            
+            <button class="btn btn-primary ownerOf">Owner of</button>
+            <button class="btn btn-primary nftSymbol">Symbol</button>
             <br>
-            <h3 id="selecttag">Select Your Account</h3>
-            <select id="options" name="accounts" class="form-control">
-            </select>
-            <button id="submit" class="btn btn-primary">SUBMIT</button>
-            <button class="enableEthereumButton">Enable Ethereum</button>
-            <div class="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</div>
-
         </div>
       </div>
+
+
+
       <div class="col-md-10 col-md-offset-1">
         <div class="send">
             <h1>MetaCoin</h1>
             <h2>Example Truffle Dapp</h2>
-            <h3>You have <span class="black"><span id="balance"></span> META</span></h3>
+            <h3>You have <span class="black"><span id=""></span> META</span></h3>
             <h3>Your Account <span class="black" id="account"></span></h3>
 
             <br>
