@@ -7,7 +7,8 @@ $(window).on('load', function() {
   const getNftName = document.querySelector('.nftName');
   const getNftSymbol = document.querySelector('.nftSymbol');
   const getContractOwner = document.querySelector('.contractOwner');
-
+  const getBalanceOf = document.querySelector('.balandeOf');
+  const getOwnerOf = document.querySelector('.ownerOf');
   
   ethereumButton.addEventListener('click', () => {  
   ethereum.request({ method: 'eth_requestAccounts' });
@@ -71,6 +72,48 @@ $(window).on('load', function() {
       })
     })
 
+    $('#mint').on('click', () => {
+      let accountTo = $('#Mintreceiver').val();
+      $.post('/mint', { accountTo: accountTo, currentAccount: currentAccount }, (response) => {
+        if(response.tx == null){
+          $('#txMint').text(response);
+        } else {
+          $('#txMint').text(response.tx); 
+        }        
+      })
+    })
+
+    let tokenOwned;
+    getBalanceOf.addEventListener('click', () => {
+      let tokenOwner = $('#tokenOwnerAddress').val();
+      $.post('/balanceOf', { tokenOwner: tokenOwner}, (response) => {
+        tokenOwned = response;
+        console.log(tokenOwned);
+        $('#tokenQtty').text(tokenOwned);
+      })
+    })
+
+    let ownerOf;
+    getOwnerOf.addEventListener('click', () => {
+      let tokenId = $('#tokenIdOwned').val();
+      $.post('/ownerOf', { tokenId: tokenId }, (response) => {
+        ownerOf = response;
+        $('#tokenOwner').text(ownerOf)        
+      })
+    })
+
+    $('#safeTransferFrom').on('click', () => {
+      let accountTo = $('#transferAccountTo').val();
+      let accountFrom = $('#transferAccountFrom').val();
+      let tokenId = $('#transferTokenId').val();
+      $.post('/safeTransferFrom', { accountFrom: accountFrom, accountTo: accountTo, tokenId: tokenId, currentAccount: currentAccount}, (response) => {
+        if(response.tx == null){
+          $('#txTransfer').text(response);
+        } else {
+          $('#txTransfer').text(response.tx); 
+        }
+      })
+    })
 
   });
 

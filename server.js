@@ -32,6 +32,41 @@ app.get('/contOwner', (req, res) => {
   })
 })
 
+app.post('/mint', (req, res) => {
+  let accountTo = req.body.accountTo;
+  let currentAccount = req.body.currentAccount;
+  CFN_connect.safeMint(accountTo, currentAccount, (callback) => {    
+    res.send(callback);
+  })
+
+})
+
+app.post('/balanceOf', (req, res) => {
+  let tokenOwner = req.body.tokenOwner;
+  CFN_connect.balandeOf(tokenOwner, (callback) => {
+    res.send(callback.toString());
+  })
+})
+
+app.post('/ownerOf', (req, res) => {
+  let tokenId = req.body.tokenId;
+  CFN_connect.ownerOf(tokenId, (callback) => {
+    res.send(callback);
+  })
+})
+
+//accountFrom: accountFrom, accountTo: accountTo, tokenId: tokenId, currentAccount: currentAccount
+
+app.post('/safeTransferFrom', (req, res) => {
+  let accountFrom = req.body.accountFrom;
+  let accountTo = req.body.accountTo;
+  let tokenId = req.body.tokenId;
+  let currentAccount = req.body.currentAccount;
+  CFN_connect.safeTransferFrom(accountFrom, accountTo, tokenId, currentAccount, (callback) => {
+    res.send(callback);
+  })
+})
+
 app.listen(port, () => {
   console.log((`Running on ${port}`));
 })

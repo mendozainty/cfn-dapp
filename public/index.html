@@ -54,8 +54,20 @@
             <h4>NFT name:  <span class="black"><span id="name"></span></span></h4>
             <h4>NFT Symbol:  <span class="black"><span id="symbol"></span></span></h4>
             <h4>Contract Owner:  <span class="black"><span id="contOwner"></span></span></h4>            
+            <button class="btn btn-primary mintTo" id="mint">Mint</button>
+            <br><label for="receiver">To Address:</label><input type="text" id="Mintreceiver" class="form-control" placeholder="address to" required></input>
+            <h4>Transaction Hash:  <span class="black"><span id="txMint"></span></span></h4>
+            <button class="btn btn-primary balandeOf">Balance of</button>
+            <br><label for="tokenOwner">Address:</label><input type="text" id="tokenOwnerAddress" class="form-control" placeholder="balance of" required></input>
+            <h4>Token Quantity:  <span class="black"><span id="tokenQtty"></span></span></h4>
             <button class="btn btn-primary ownerOf">Owner of</button>
-            <button class="btn btn-primary nftSymbol">Symbol</button>
+            <br><label for="tokenOwned">Token ID:</label><input type="text" id="tokenIdOwned" class="form-control" placeholder="token ID" required></input>
+            <h4>Token Owner:  <span class="black"><span id="tokenOwner"></span></span></h4>
+            <button class="btn btn-primary mintTo" id="safeTransferFrom">Safe Transfer</button>
+            <br><label for="receiver">From Address:</label><input type="text" id="transferAccountFrom" class="form-control" placeholder="Address From" required></input>
+            <label for="receiver">To Address:</label><input type="text" id="transferAccountTo" class="form-control" placeholder="Address To" required></input>
+            <label for="receiver">Token ID:</label><input type="text" id="transferTokenId" class="form-control" placeholder="Token ID" required></input>
+            <h4>Transaction Hash:  <span class="black"><span id="txTransfer"></span></span></h4>
             <br>
         </div>
       </div>
