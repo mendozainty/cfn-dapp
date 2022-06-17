@@ -1,5 +1,6 @@
 
 $(window).on('load', function() {
+  
   const ethereumButton = document.querySelector('.enableEthereumButton');
   const getAccountButton = document.querySelector('.ethereumGetAccount');
   const getAccBalance = document.querySelector('.ethereumGetBalance');
@@ -74,6 +75,9 @@ $(window).on('load', function() {
 
     $('#mint').on('click', () => {
       let accountTo = $('#Mintreceiver').val();
+      ethereum.request({ method: 'eth_accounts'}).then((result) => {
+        currentAccount = result
+      });
       $.post('/mint', { accountTo: accountTo, currentAccount: currentAccount }, (response) => {
         if(response.tx == null){
           $('#txMint').text(response);
