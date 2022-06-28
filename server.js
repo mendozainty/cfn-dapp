@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const CFN_connect = require('./connection/app.js');
 
-
 const port = process.env.PORT || 3000;
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true}));
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', express.static('public'))
+
 
 app.get('/nftName', (req, res) => {
   CFN_connect.getName((callback) => {
@@ -63,6 +65,15 @@ app.post('/safeTransferFrom', (req, res) => {
   let tokenId = req.body.tokenId;
   let currentAccount = req.body.currentAccount;
   CFN_connect.safeTransferFrom(accountFrom, accountTo, tokenId, currentAccount, (callback) => {
+    res.send(callback);
+  })
+})
+
+app.post('/approveTo', (req, res) => {
+  let approveTo = req.body.approveTo;
+  let tokenId = req.body.tokenId;
+  let currentAccount = req.body.currentAccount;
+  CFN_connect.approve(approveTo, tokenId, currentAccount, (callback) => {
     res.send(callback);
   })
 })

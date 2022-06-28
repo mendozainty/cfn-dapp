@@ -150,10 +150,8 @@ module.exports = {
       CFN_instance = instance;
       return CFN_instance.safeTransferFrom(accountFrom, accountTo, tokenId, {from: currentAccount});
     }).then((result) => {
-      console.log(result);
       callback(result);
-    }).catch((e) => {
-      console.log(e);
+    }).catch((e) => {      
       callback(JSON.stringify(e.data));
     })
   },
