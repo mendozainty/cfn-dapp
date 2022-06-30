@@ -156,7 +156,7 @@ module.exports = {
     var CFN_instance;
     CFN.deployed().then((instance) => {
       CFN_instance = instance;
-      return CFN_instance._burnCFN( tokenId, {from: currentAccount});
+      return CFN_instance.burn( tokenId, {from: currentAccount});
     }).then((result) => {      
         console.log(result);
         callback(result);      

@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 
@@ -21,17 +20,10 @@ contract CommFutureNFT is Context, ERC165, IERC721, IERC721Metadata {
     string private _name = "CommFutureNFT";
     string private _symbol = "CFN";
     address public _contractOwner;
-
-    // Mapping from token ID to owner address
-    mapping(uint256 => address) private _owners;
-
-    // Mapping owner address to token count
-    mapping(address => uint256) private _balances;
-
-    // Mapping from token ID to approved address
-    mapping(uint256 => address) private _tokenApprovals;
-
-    // Mapping from owner to operator approvals
+    
+    mapping(uint256 => address) private _owners;   
+    mapping(address => uint256) private _balances;    
+    mapping(uint256 => address) private _tokenApprovals;    
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
     
@@ -44,7 +36,7 @@ contract CommFutureNFT is Context, ERC165, IERC721, IERC721Metadata {
         _;
     }
 
-       function isContractOwner() internal view returns (bool) {
+    function isContractOwner() internal view returns (bool) {
         return msg.sender == _contractOwner;
     }
 
@@ -128,8 +120,7 @@ contract CommFutureNFT is Context, ERC165, IERC721, IERC721Metadata {
         address from,
         address to,
         uint256 tokenId
-    ) public virtual override {
-        //solhint-disable-next-line max-line-length
+    ) public virtual override {        
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
 
         _transfer(from, to, tokenId);
@@ -174,18 +165,12 @@ contract CommFutureNFT is Context, ERC165, IERC721, IERC721Metadata {
     ) internal virtual {
         require(CommFutureNFT.ownerOf(tokenId) == from, "ERC721: transfer from incorrect owner");
         require(to != address(0), "ERC721: transfer to the zero address");
-
-        _beforeTokenTransfer(from, to, tokenId);
-
-        // Clear approvals from the previous owner
+        _beforeTokenTransfer(from, to, tokenId);       
         _approve(address(0), tokenId);
-
         _balances[from] -= 1;
         _balances[to] += 1;
         _owners[tokenId] = to;
-
         emit Transfer(from, to, tokenId);
-
         _afterTokenTransfer(from, to, tokenId);
     }
     
@@ -222,18 +207,14 @@ contract CommFutureNFT is Context, ERC165, IERC721, IERC721Metadata {
     function _mint(address to, uint256 tokenId) internal virtual {
         require(to != address(0), "ERC721: mint to the zero address");
         require(!_exists(tokenId), "ERC721: token already minted");
-
         _beforeTokenTransfer(address(0), to, tokenId);
-
         _balances[to] += 1;
         _owners[tokenId] = to;
-
         emit Transfer(address(0), to, tokenId);
-
         _afterTokenTransfer(address(0), to, tokenId);
     }
 
-    function _burnCFN(uint256 tokenId) public {
+    function burn(uint256 tokenId) public {
         address owner = CommFutureNFT.ownerOf(tokenId);
         require(msg.sender == owner, "Only Token owner can burn it");        
         _burn(tokenId);
@@ -241,17 +222,11 @@ contract CommFutureNFT is Context, ERC165, IERC721, IERC721Metadata {
 
     function _burn(uint256 tokenId) internal virtual {
         address owner = CommFutureNFT.ownerOf(tokenId);
-
         _beforeTokenTransfer(owner, address(0), tokenId);
-
-        // Clear approvals
         _approve(address(0), tokenId);
-
         _balances[owner] -= 1;
         delete _owners[tokenId];
-
         emit Transfer(owner, address(0), tokenId);
-
         _afterTokenTransfer(owner, address(0), tokenId);
     }
 

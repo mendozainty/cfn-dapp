@@ -54,7 +54,8 @@ $(window).on('load', function() {
       return result;      
     })
     return tokenQtty;
-  }  
+  }
+  let tokenId;
   const getTokenOwner = async () => {
     let result;
     const tokenOwner = await $.post('/ownerOf', { tokenId: tokenId }, (response) => {      
@@ -116,8 +117,7 @@ $(window).on('load', function() {
         accountTo: accountTo, 
         accountFrom: currentAccount[0], 
         contractAddress: contractAddress 
-      }, async (response) => {
-        console.log(response);
+      }, async (response) => {        
         try {
           const txHashMint = await ethereum.request({
             method: 'eth_sendTransaction',
@@ -132,12 +132,12 @@ $(window).on('load', function() {
   })
 
   $('#burn').on('click', async () => {
+    tokenId = $('#burnTokenId').val();
     const [currentAccount, contractAddress, tokenOwner] = await Promise.all([
       getAccount(),
       getContAddress(),    
       getTokenOwner()
-    ])          
-    tokenId = $('#burnTokenId').val();
+    ])
     if(tokenOwner.toLowerCase() !== currentAccount[0].toLowerCase()){
       $('#txburn').text('You are not the token Owner')
     } else {
@@ -174,21 +174,46 @@ $(window).on('load', function() {
   })
   
   $('#safeTransferFrom').on('click', async () => {
-    const currentAccount = await getAccount();
+    tokenId = $('#transferTokenId').val();
+    const [currentAccount, contractAddress, tokenOwner] = await Promise.all([
+      getAccount(),
+      getContAddress(),    
+      getTokenOwner()
+    ]) 
     let accountTo = $('#transferAccountTo').val();
-    let accountFrom = $('#transferAccountFrom').val();
-    let tokenId = $('#transferTokenId').val();    
-    $.post('/safeTransferFrom', { accountFrom: accountFrom, accountTo: accountTo, tokenId: tokenId, currentAccount: currentAccount}, (response) => {
-      if(response.tx == null){
-        $('#txTransfer').text(response);
-      } else {
-        $('#txTransfer').text(response.tx); 
-      }
-    })
+    let accountFrom = $('#transferAccountFrom').val();   
+    if(currentAccount[0].toLowerCase() !== tokenOwner.toLowerCase()){
+      $('#txTransfer').text('You are not the token Owner')
+    } else {
+      $.post('/safeTransferFrom', { 
+        accountFrom: accountFrom, 
+        accountTo: accountTo, 
+        tokenId: tokenId, 
+        currentAccount: currentAccount[0], 
+        contractAddress: contractAddress}, async (response) => {
+          try {
+            let result;
+            const txHashTransfer = await ethereum.request({
+              method: 'eth_sendTransaction',
+              params: [response],
+            })
+            result = txHashTransfer                             
+            $('#txTransfer').text(result);            
+          } catch (e) {
+            $('#txTransfer').text(e.message);
+          } 
+        // if(response.tx == null){
+        //   $('#txTransfer').text(response);
+        // } else {
+        //   $('#txTransfer').text(response.tx); 
+        // }
+      })
+    }
+
   })
   
-  $('#approveTo').on('click', () => {
-    getAccount();
+  $('#approveTo').on('click', async () => {
+    const currentAccount = await getAccount();
     let approveTo = $('#approveAccountTo').val();
     let tokenId = $('#approveTokenId').val();    
     $.post('/approveTo', { approveTo: approveTo, tokenId: tokenId, currentAccount: currentAccount}, (response) => {

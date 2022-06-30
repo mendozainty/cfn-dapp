@@ -15,6 +15,7 @@ const getDeployed = () => {
     console.log(result);
   })
 }
+getDeployed();
 
 const safeMintEncode = web3.eth.abi.encodeFunctionCall({
       name: 'safeMint',

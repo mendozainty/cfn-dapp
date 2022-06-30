@@ -53,8 +53,7 @@ app.post('/mint', (req, res) => {
     from: accountFrom,
     data: safeMintEncode,
   };  
- res.send(transactionParameters);;
-
+ res.send(transactionParameters);
 })
 
 app.post('/burn', (req, res) => {
@@ -62,7 +61,7 @@ app.post('/burn', (req, res) => {
   let accountFrom = req.body.currentAccount;
   let contractAddress = req.body.contractAddress;
   const _burnCFNEncode = web3.eth.abi.encodeFunctionCall({
-    name: '_burnCFN',
+    name: 'burn',
     type: 'function',
     inputs: [{
       type: 'uint256',
@@ -96,9 +95,28 @@ app.post('/safeTransferFrom', (req, res) => {
   let accountTo = req.body.accountTo;
   let tokenId = req.body.tokenId;
   let currentAccount = req.body.currentAccount;
-  CFN_connect.safeTransferFrom(accountFrom, accountTo, tokenId, currentAccount, (callback) => {
-    res.send(callback);
-  })
+  let contractAddress = req.body.contractAddress;
+  const safeTransferFromEncode = web3.eth.abi.encodeFunctionCall({
+    name: 'safeTransferFrom',
+    type: 'function',
+    inputs: [{
+        type: 'address',
+        name: 'from'
+    },
+    {
+      type: 'address',
+      name: 'to'
+    }, {
+      type: 'uint256',
+      name: 'tokenId'
+    }]
+  }, [accountFrom, accountTo, tokenId]);  
+  const transactionParameters = {
+    to: contractAddress,
+    from: currentAccount,
+    data: safeTransferFromEncode,
+  };   
+  res.send(transactionParameters);  
 })
 
 app.post('/approveTo', (req, res) => {
