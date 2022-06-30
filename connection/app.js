@@ -3,11 +3,6 @@ const Web3 = require('web3');
 const cfn_artifact = require('../build/contracts/CommFutureNFT.json');
 var CFN = contract(cfn_artifact);
 
-// var account_1 = '0x28eE29B6C1350A462D25F2fC602F3C4a3c01aD61';
-// var account_2 = '0x77bb8794Aa0fC9f4CFef02a8cEDD4084225dA509';
-// var account_3 = '0x68E54E1b0F516ceE62f6F3675d344Fe0016D5603';
-// var account_4 = '0xA8F73a405CDC2873A3c6898eefE73e87a20A8467';
-
 // var intefaceIERC721 = '0x80ac58cd';
 // var intefaceIERC721Metadata = '0x5b5e139f';
 // var intefaceIERC165 = '0x01ffc9a7';

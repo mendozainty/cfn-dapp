@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const CFN_connect = require('./connection/app.js');
+const Web3 = require(`web3`);
 
 const port = process.env.PORT || 3000;
 const app = express();
+const web3 = new Web3;
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,11 +38,43 @@ app.get('/contOwner', (req, res) => {
 
 app.post('/mint', (req, res) => {
   let accountTo = req.body.accountTo;
-  let currentAccount = req.body.currentAccount;
-  CFN_connect.safeMint(accountTo, currentAccount, (callback) => {    
-    res.send(callback);
-  })
+  let accountFrom = req.body.accountFrom; 
+  let contractAddress = req.body.contractAddress; 
+  const safeMintEncode = web3.eth.abi.encodeFunctionCall({
+    name: 'safeMint',
+    type: 'function',
+    inputs: [{
+        type: 'address',
+        name: ''
+    }]
+  }, [accountTo]);  
+  const transactionParameters = {
+    to: contractAddress,
+    from: accountFrom,
+    data: safeMintEncode,
+  };  
+ res.send(transactionParameters);;
 
+})
+
+app.post('/burn', (req, res) => {
+  let tokenId = req.body.tokenId;
+  let accountFrom = req.body.currentAccount;
+  let contractAddress = req.body.contractAddress;
+  const _burnCFNEncode = web3.eth.abi.encodeFunctionCall({
+    name: '_burnCFN',
+    type: 'function',
+    inputs: [{
+      type: 'uint256',
+      name: 'tokenId'
+    }]
+  }, [tokenId]);
+  const transactionParameters = {
+    to: contractAddress,
+    from: accountFrom,
+    data: _burnCFNEncode,
+  };
+  res.send(transactionParameters);
 })
 
 app.post('/balanceOf', (req, res) => {
@@ -56,8 +90,6 @@ app.post('/ownerOf', (req, res) => {
     res.send(callback);
   })
 })
-
-//accountFrom: accountFrom, accountTo: accountTo, tokenId: tokenId, currentAccount: currentAccount
 
 app.post('/safeTransferFrom', (req, res) => {
   let accountFrom = req.body.accountFrom;

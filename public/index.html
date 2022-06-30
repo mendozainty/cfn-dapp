@@ -72,59 +72,14 @@
             <br><label for="approveTo">To Address:</label><input type="text" id="approveAccountTo" class="form-control" placeholder="Address To" required></input>
             <label for="approveTokenID">Token ID:</label><input type="text" id="approveTokenId" class="form-control" placeholder="Token ID" required></input>
             <h4>Transaction Hash:  <span class="black"><span id="txApprove"></span></span></h4>
+            <button class="btn btn-primary" id="burn">Burn Token</button>
+            <br><label for="burnTokenID">Token ID:</label><input type="text" id="burnTokenId" class="form-control" placeholder="Token ID" required></input>
+            <h4>Transaction Hash:  <span class="black"><span id="txburn"></span></span></h4>
             <br>
         </div>
       </div>
-
-
-
-      <div class="col-md-10 col-md-offset-1">
-        <div class="send">
-            <h1>MetaCoin</h1>
-            <h2>Example Truffle Dapp</h2>
-            <h3>You have <span class="black"><span id=""></span> META</span></h3>
-            <h3>Your Account <span class="black" id="account"></span></h3>
-
-            <br>
-            <h1>Send MetaCoin</h1>
-            <div class="row">
-              <div>
-                <div class="col-md-12">
-                <br><label for="amount">Amount:</label><input type="number" id="amount" class="form-control" placeholder="e.g., 95" required></input>
-                <br><label for="receiver">To Address:</label><input type="text" id="receiver" class="form-control" placeholder="copy and paste from the list of active accounts below" required></input>
-                </div>
-                <div class="col-md-4 col-md-offset-4">
-                  <br><br><button class="btn btn-primary" id="send">Send MetaCoin</button>
-                </div>
-
-
-
-                <br><br>
-                <span id="status"></span>
-              </div>
-            </div>
-
-
-            <br>
-            <div class="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</div>
-        </div>
-      </div>
-      <div class="col-md-10 col-md-offset-1">
-        <div id="all-accounts">
-          <h3>Accounts on the chain you can send MetaCoin to:</h3>
-          <ol>
-
-          </ol>
-        </div>
-      </div>
-
     </div>
-
-
-
   </div>
-
-
-    <script src="javascript/client_side.js"></script>
+  <script src="javascript/client_side.js"></script>
 </body>
 </html>
